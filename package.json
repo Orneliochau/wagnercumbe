@@ -1,0 +1,13 @@
+{
+  "name": "maquina-oculta",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Página VSL Máquina Oculta — estática, pronta para Vercel, com Meta Pixel + Conversions API",
+  "scripts": {
+    "build": "node scripts/build.mjs"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
