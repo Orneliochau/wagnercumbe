@@ -1,7 +1,7 @@
 // Build sem dependências: copia src/ para dist/ e injecta configuração pública no HTML.
 // Variáveis lidas no build — todas opcionais: META_PIXEL_ID, CHECKOUT_URL, SITE_URL.
 // Se estiverem ausentes o build passa na mesma; só falha se o valor dado for inválido.
-import { cp, readFile, writeFile, rm, mkdir } from 'node:fs/promises';
+import { cp, readFile, writeFile, rm, mkdir, readdir } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
 
@@ -36,9 +36,12 @@ await mkdir(dist, { recursive: true });
 await cp(src, dist, { recursive: true });
 
 const config = JSON.stringify({ pixelId, checkoutUrl }).replace(/</g, '\\u003c');
-const file = path.join(dist, 'index.html');
-let html = await readFile(file, 'utf8');
-html = html.replace('/*MO_CONFIG*/{}', config).replaceAll('{{SITE_URL}}', siteUrl);
-await writeFile(file, html);
+const htmlFiles = (await readdir(dist)).filter((f) => f.endsWith('.html'));
+for (const name of htmlFiles) {
+  const file = path.join(dist, name);
+  let html = await readFile(file, 'utf8');
+  html = html.replace('/*MO_CONFIG*/{}', config).replaceAll('{{SITE_URL}}', siteUrl);
+  await writeFile(file, html);
+}
 
-console.log(`Build concluída → dist/  (pixel: ${pixelId ? 'activo' : 'desactivado'}, checkout: ${checkoutUrl ? 'definido' : 'não definido'}, site: ${siteUrl || 'relativo'})`);
+console.log(`Build concluída → dist/  (pixel: ${pixelId ? 'activo' : 'desactivado'}, checkout: ${checkoutUrl ? 'definido' : 'não definido'}, site: ${siteUrl || 'relativo'}, páginas: ${htmlFiles.join(', ')})`);
