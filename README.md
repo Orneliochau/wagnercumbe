@@ -1,16 +1,18 @@
 # Máquina Oculta — VSL (estático, pronto para Vercel)
 
-Página estática (HTML + CSS inline + JS simples). Sem framework, sem dependências.
+Página estática, tudo num único ficheiro HTML (CSS e JS inline). Sem framework, sem dependências, sem build tools externas.
 `npm run build` copia `src/` para `dist/` e injecta o Pixel ID / checkout no HTML.
 
 ## Estrutura
 ```
-src/index.html            página (CSS inline, Pixel no <head>)
-src/assets/js/vsl.js      contador de 9 min + desbloqueio do quiz
-src/assets/js/tracking.js ViewContent, InitiateCheckout, envio para /api/capi (dedupe por event_id)
-api/capi.js               função serverless — Meta Conversions API (token só aqui)
-scripts/build.mjs         build (sem dependências)
-vercel.json               outputDirectory=dist, cabeçalhos de segurança
+src/index.html          página completa: CSS inline, Pixel no <head>, tracking (Meta CAPI) e
+                         contador do VSL inline no final do <body>
+src/assets/images/       favicon e imagem do og:image (únicos ficheiros à parte — não fazem
+                         sentido inline: favicon é lido pelo browser por URL, og:image precisa
+                         de ser uma URL absoluta para os crawlers do Facebook/Twitter)
+api/capi.js              função serverless — Meta Conversions API (token só aqui)
+scripts/build.mjs        build (sem dependências)
+vercel.json              outputDirectory=dist, cabeçalhos de segurança
 ```
 
 ## Variáveis de ambiente (Vercel → Settings → Environment Variables)
