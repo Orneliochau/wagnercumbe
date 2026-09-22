@@ -18,7 +18,7 @@ vercel.json              outputDirectory=dist, cabeçalhos de segurança
 ## Variáveis de ambiente (Vercel → Settings → Environment Variables)
 | Nome | Onde é usada | Notas |
 |---|---|---|
-| `META_PIXEL_ID` | build + função | público; em produção o build falha se faltar |
+| `META_PIXEL_ID` | build + função | público; opcional — se faltar, o build passa na mesma e o Pixel fica desactivado |
 | `META_ACCESS_TOKEN` | só a função `/api/capi` | **secreto** — nunca no código nem no chat |
 | `CHECKOUT_URL` | build | URL do novo checkout (para elementos `[data-checkout]`) |
 | `META_TEST_EVENT_CODE` | função | opcional, só para testar no Events Manager |
